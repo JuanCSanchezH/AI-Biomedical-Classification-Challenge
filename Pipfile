@@ -4,11 +4,17 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-
+pandas = "*"
+numpy = "*"
+scikit-learn = "*"
+scikit-multilearn = "*"
+xgboost = "*"
+nltk = "*"
+matplotlib = "*"
+seaborn = "*"
+wordcloud = "*"
 
 [dev-packages]
-ruff = "0.7.0"
-pre-commit = "3.7.0"
 
 [requires]
 python_version = "3.13"
