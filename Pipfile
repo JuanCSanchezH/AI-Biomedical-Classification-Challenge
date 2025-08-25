@@ -1,0 +1,14 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+
+
+[dev-packages]
+ruff = "0.7.0"
+pre-commit = "3.7.0"
+
+[requires]
+python_version = "3.13"
