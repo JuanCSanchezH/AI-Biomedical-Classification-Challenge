@@ -1,165 +1,215 @@
-"""
-Main script for medical article multi-label classification challenge.
-Implements the complete pipeline: data processing, feature engineering,
-model training, evaluation, and output generation.
-"""
+"""Main pipeline for medical article classification challenge."""
 
+import logging
 import os
 import sys
+from pathlib import Path
 
 # Add src to path
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
-from data_processing import DataProcessor
-from evaluation import MultiLabelEvaluator
-from feature_engineering import FeatureEngineer
-from models import ModelTrainer
-from utils import create_output_directory, plot_metrics_comparison, print_dataset_summary, save_predictions
+sys.path.append(str(Path(__file__).parent))
 
 
-def main():
-    """Main function to run the complete pipeline."""
+from data.loader import DataLoader
+from features.vectorizer import FeaturePipeline, TextVectorizer
+from utils.visualization import ModelVisualizer, setup_plotting_style
 
-    print("=== MEDICAL ARTICLE CLASSIFICATION CHALLENGE ===")
-    print("Starting the complete pipeline...\n")
+from models.multilabel_models import ModelComparison, ModelEvaluator, MultiLabelClassifier
 
-    # Define paths
-    input_path = "input/challenge_data.csv"
-    output_path = "output"
+# Setup logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[logging.FileHandler("output/pipeline.log"), logging.StreamHandler()],
+)
 
-    # Create output directory
-    create_output_directory(output_path)
 
-    # Step 1: Data Processing
-    print("STEP 1: DATA PROCESSING")
-    print("=" * 50)
+def setup_directories():
+    """Create necessary directories."""
+    directories = ["output", "models"]
+    for directory in directories:
+        os.makedirs(directory, exist_ok=True)
 
-    data_processor = DataProcessor(input_path)
 
-    # Load and analyze data
-    data = data_processor.load_data()
-    if data is None:
-        print("Error: Could not load data. Exiting.")
-        return
+def train_and_evaluate_models():
+    """Train and evaluate all 9 model combinations."""
+    logging.info("Starting model training and evaluation pipeline")
 
-    # Print dataset summary
-    print_dataset_summary(data)
+    # Setup
+    setup_directories()
+    setup_plotting_style()
 
-    # Prepare data for multi-label classification
-    X_train, X_test, y_train, y_test, label_names = data_processor.prepare_data()
+    # Load and prepare data
+    logging.info("Loading and preparing data...")
+    data_loader = DataLoader()
+    data_info = data_loader.get_data_info()
+    logging.info(f"Dataset info: {data_info}")
 
-    print("\nData preparation completed:")
-    print(f"  Training samples: {len(X_train)}")
-    print(f"  Test samples: {len(X_test)}")
-    print(f"  Number of labels: {len(label_names)}")
-    print(f"  Labels: {label_names}")
+    X, y = data_loader.prepare_features(combine_title_abstract=True)
+    X_train, X_test, y_train, y_test = data_loader.split_data(X, y, test_size=0.2)
+    label_names = data_loader.get_label_names()
 
-    # Step 2: Feature Engineering
-    print("\nSTEP 2: FEATURE ENGINEERING")
-    print("=" * 50)
+    logging.info(f"Data split - Train: {X_train.shape}, Test: {X_test.shape}")
+    logging.info(f"Label names: {label_names}")
 
-    feature_engineer = FeatureEngineer(max_features=3000, n_components=500)
+    # Feature engineering
+    logging.info("Performing feature engineering...")
+    vectorizer = TextVectorizer(max_features=5000, ngram_range=(1, 2))
+    feature_pipeline = FeaturePipeline(vectorizer)
 
-    # Create TF-IDF features
-    print("Creating TF-IDF features...")
-    X_train_tfidf, X_test_tfidf = feature_engineer.create_tfidf_features(X_train, X_test, fit=True)
+    X_train_features = feature_pipeline.fit_transform(X_train)
+    X_test_features = feature_pipeline.transform(X_test)
 
-    print("Feature engineering completed:")
-    print(f"  Training features: {X_train_tfidf.shape}")
-    print(f"  Test features: {X_test_tfidf.shape}")
+    logging.info(f"Feature engineering completed - Train: {X_train_features.shape}, Test: {X_test_features.shape}")
 
-    # Step 3: Model Training (All 9 combinations)
-    print("\nSTEP 3: MODEL TRAINING")
-    print("=" * 50)
-    print("Training all 9 model combinations (3 strategies × 3 algorithms)...")
+    # Save feature pipeline
+    feature_pipeline.save_pipeline("models/feature_pipeline.pkl")
 
-    model_trainer = ModelTrainer()
+    # Define model combinations
+    strategies = ["BR", "CC", "LP"]  # Binary Relevance, Classifier Chains, Label Powerset
+    algorithms = ["logistic", "svm", "xgboost"]  # Logistic Regression, SVM, XGBoost
 
-    # Train all models
-    results = model_trainer.train_all_models(X_train_tfidf, y_train, X_test_tfidf, y_test)
+    # Initialize evaluator and comparison
+    evaluator = ModelEvaluator()
+    comparison = ModelComparison()
+    visualizer = ModelVisualizer()
 
-    # Step 4: Model Evaluation
-    print("\nSTEP 4: MODEL EVALUATION")
-    print("=" * 50)
+    # Train and evaluate all 9 combinations
+    logging.info("Training and evaluating all 9 model combinations...")
 
-    evaluator = MultiLabelEvaluator()
+    for strategy in strategies:
+        for algorithm in algorithms:
+            logging.info(f"Training {strategy} + {algorithm}...")
 
-    # Evaluate all models
-    print("Calculating evaluation metrics for all models...")
-    metrics_df = evaluator.evaluate_all_models(results)
+            try:
+                # Create and train model
+                model = MultiLabelClassifier(strategy=strategy, base_algorithm=algorithm)
+                model.fit(X_train_features, y_train, label_names=label_names)
 
-    # Create comparison table
-    comparison_table = evaluator.create_comparison_table(metrics_df)
+                # Evaluate model
+                metrics = evaluator.evaluate_model(model, X_test_features, y_test, label_names)
 
-    # Print results
-    print("\nModel Performance Comparison (sorted by Weighted F1):")
-    print("-" * 80)
-    print(comparison_table.to_string(index=False))
+                # Add to comparison
+                comparison.add_model_result(strategy, algorithm, metrics)
 
-    # Step 5: Select Best Model
-    print("\nSTEP 5: SELECTING BEST MODEL")
-    print("=" * 50)
+                # Save model
+                model.save(f"models/{strategy}_{algorithm}_model.pkl")
 
-    best_model_name = evaluator.get_best_model(metrics_df, metric="f1_weighted")
+                logging.info(f"Completed {strategy} + {algorithm}")
 
-    if best_model_name:
-        print(f"Best model based on Weighted F1: {best_model_name}")
+            except Exception as e:
+                logging.error(f"Error training {strategy} + {algorithm}: {e}")
+                continue
 
-        # Get best model details
-        best_result = results[best_model_name]
-        best_metrics = metrics_df[metrics_df["model_name"] == best_model_name].iloc[0]
+    # Get comparison results
+    comparison_df = comparison.get_comparison_dataframe()
+    logging.info("Model comparison results:")
+    logging.info(comparison_df.to_string())
 
-        print("\nBest model performance:")
-        print(f"  Weighted F1: {best_metrics['f1_weighted']:.4f}")
-        print(f"  Subset Accuracy: {best_metrics['subset_accuracy']:.4f}")
-        print(f"  Hamming Loss: {best_metrics['hamming_loss']:.4f}")
+    # Save comparison results
+    comparison.save_results("output/model_comparison_results.csv")
 
-        # Print detailed report for best model
-        evaluator.print_detailed_report(
-            best_result["true_labels"], best_result["predictions"], best_model_name, label_names
-        )
-    else:
-        print("No valid model found!")
-        return
+    # Create visualizations
+    logging.info("Creating visualizations...")
 
-    # Step 6: Generate Output Files
-    print("\nSTEP 6: GENERATING OUTPUT FILES")
-    print("=" * 50)
+    # 1. Comparison charts for all 9 models
+    visualizer.create_comparison_charts(comparison_df)
 
-    # Save predictions
-    predictions_path = os.path.join(output_path, "predictions.csv")
-    save_predictions(X_test, y_test, best_result["predictions"], label_names, predictions_path)
+    # 2. Comparison table
+    visualizer.create_comparison_table(comparison_df)
 
-    # Save comparison table
-    comparison_path = os.path.join(output_path, "results_comparison.csv")
-    comparison_table.to_csv(comparison_path, index=False)
-    print(f"Comparison table saved to {comparison_path}")
+    # 3. Data exploration charts
+    visualizer.create_data_exploration_charts(data_info)
 
-    # Create visualization
-    plot_path = os.path.join(output_path, "model_comparison.png")
-    plot_metrics_comparison(metrics_df, plot_path)
+    # Get best model
+    best_model_info = comparison.get_best_model()
+    logging.info(f"Best model: {best_model_info}")
 
-    # Step 7: Final Summary
-    print("\nSTEP 7: FINAL SUMMARY")
-    print("=" * 50)
+    # 4. Best model chart
+    visualizer.create_best_model_chart(
+        best_model_info, f"{best_model_info['strategy']} + {best_model_info['algorithm'].title()}"
+    )
 
-    print("Challenge completed successfully!")
-    print(f"\nOutput files created in '{output_path}':")
-    print("  - predictions.csv: Test dataset with predictions")
-    print("  - results_comparison.csv: Model comparison table")
-    print("  - model_comparison.png: Performance visualization")
+    # 5. Confusion matrix for best model
+    best_model = MultiLabelClassifier(strategy=best_model_info["strategy"], base_algorithm=best_model_info["algorithm"])
+    best_model.load(f"models/{best_model_info['strategy']}_{best_model_info['algorithm']}_model.pkl")
 
-    print(f"\nBest performing model: {best_model_name}")
-    print(f"Strategy: {best_model_name.split('_')[0]}")
-    print(f"Algorithm: {best_model_name.split('_')[1]}")
+    y_pred_best = best_model.predict(X_test_features)
+    visualizer.create_confusion_matrix(y_test, y_pred_best, label_names)
 
-    print("\nFinal metrics:")
-    print(f"  Weighted F1 Score: {best_metrics['f1_weighted']:.4f}")
-    print(f"  Subset Accuracy: {best_metrics['subset_accuracy']:.4f}")
-    print(f"  Hamming Loss: {best_metrics['hamming_loss']:.4f}")
+    # Create output file with predictions
+    logging.info("Creating output file with predictions...")
+    create_output_file(data_loader, X_test, y_test, y_pred_best, label_names, best_model_info)
 
-    print("\n=== CHALLENGE COMPLETED ===")
+    logging.info("Pipeline completed successfully!")
+    return best_model_info
+
+
+def create_output_file(data_loader, X_test, y_test, y_pred, label_names, best_model_info):
+    """Create output file with test data and predictions."""
+
+    # Get original test data indices
+    test_indices = data_loader.data.index[-len(X_test) :]  # Assuming test set is the last portion
+
+    # Create output DataFrame
+    output_data = data_loader.data.iloc[test_indices].copy()
+    output_data["target"] = output_data["group"]  # Original labels
+
+    # Convert predictions back to label format
+    predicted_labels = []
+    for pred in y_pred:
+        labels = [label_names[i] for i, val in enumerate(pred) if val == 1]
+        predicted_labels.append("|".join(labels) if labels else "none")
+
+    output_data["predictions"] = predicted_labels
+
+    # Add model information
+    output_data["model_strategy"] = best_model_info["strategy"]
+    output_data["model_algorithm"] = best_model_info["algorithm"]
+    output_data["model_weighted_f1"] = best_model_info["weighted_f1"]
+
+    # Save to CSV
+    output_path = "output/test_predictions.csv"
+    output_data.to_csv(output_path, index=False, sep=";")
+    logging.info(f"Output file saved to {output_path}")
+
+    # Print summary
+    logging.info("Output file summary:")
+    logging.info(f"  Total test samples: {len(output_data)}")
+    logging.info(f"  Best model: {best_model_info['strategy']} + {best_model_info['algorithm']}")
+    logging.info(f"  Weighted F1 Score: {best_model_info['weighted_f1']:.4f}")
+
+
+def cleanup_unused_models(best_model_info):
+    """Remove models that are not the best performing one."""
+    logging.info("Cleaning up unused models...")
+
+    strategies = ["BR", "CC", "LP"]
+    algorithms = ["logistic", "svm", "xgboost"]
+
+    for strategy in strategies:
+        for algorithm in algorithms:
+            model_file = f"models/{strategy}_{algorithm}_model.pkl"
+
+            # Keep the best model and feature pipeline
+            if strategy == best_model_info["strategy"] and algorithm == best_model_info["algorithm"]:
+                logging.info(f"Keeping best model: {model_file}")
+            elif os.path.exists(model_file):
+                os.remove(model_file)
+                logging.info(f"Removed: {model_file}")
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        # Run the complete pipeline
+        best_model_info = train_and_evaluate_models()
+
+        # Cleanup unused models
+        cleanup_unused_models(best_model_info)
+
+        logging.info("Challenge completed successfully!")
+        logging.info(f"Best model: {best_model_info['strategy']} + {best_model_info['algorithm']}")
+        logging.info(f"Best weighted F1 score: {best_model_info['weighted_f1']:.4f}")
+
+    except Exception as e:
+        logging.error(f"Pipeline failed: {e}")
+        raise
