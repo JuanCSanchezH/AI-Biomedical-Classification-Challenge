@@ -7,6 +7,8 @@ This project implements a Binary Relevance + XGBoost multi-label classification 
 ```
 model12/
 ├── input/                 # Input data
+model12/
+├── input/                 # Input data
 │   └── challenge_data.csv
 ├── models/               # Trained models
 │   ├── BR_xgboost_model.pkl
