@@ -1,0 +1,382 @@
+{
+  "api_endpoints": {
+    "classify_single": {
+      "endpoint": "/api/classify-single",
+      "method": "POST",
+      "description": "Classify a single medical article",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Article title",
+            "required": true
+          },
+          "abstract": {
+            "type": "string", 
+            "description": "Article abstract",
+            "required": true
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["success", "error"]
+          },
+          "title": {
+            "type": "string"
+          },
+          "abstract": {
+            "type": "string"
+          },
+          "predicted_labels": {
+            "type": "string",
+            "description": "Pipe-separated list of predicted domains"
+          },
+          "prediction_matrix": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "Binary prediction array [cardiovascular, neurological, hepatorenal, oncological]"
+          },
+          "label_names": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "confidence": {
+            "type": "number",
+            "description": "Prediction confidence score"
+          },
+          "domains": {
+            "type": "object",
+            "description": "Domain information for each predicted label"
+          },
+          "is_mock": {
+            "type": "boolean",
+            "description": "Whether this is a mock prediction"
+          },
+          "error": {
+            "type": "string",
+            "description": "Error message if status is error"
+          }
+        }
+      },
+      "example_request": {
+        "title": "Cardiac arrhythmia detection using machine learning",
+        "abstract": "This study presents a novel approach for detecting cardiac arrhythmias using machine learning techniques..."
+      },
+      "example_response": {
+        "status": "success",
+        "title": "Cardiac arrhythmia detection using machine learning",
+        "abstract": "This study presents a novel approach for detecting cardiac arrhythmias using machine learning techniques...",
+        "predicted_labels": "cardiovascular",
+        "prediction_matrix": [1, 0, 0, 0],
+        "label_names": ["cardiovascular", "neurological", "hepatorenal", "oncological"],
+        "confidence": 0.92,
+        "domains": {
+          "cardiovascular": {
+            "name": "Cardiovascular",
+            "description": "Heart and blood vessel related research",
+            "icon": "🫀",
+            "keywords": ["cardiac", "heart", "cardiovascular", "artery", "vein", "blood pressure"]
+          }
+        },
+        "is_mock": false
+      }
+    },
+    "classify_batch": {
+      "endpoint": "/api/classify-batch",
+      "method": "POST",
+      "description": "Classify multiple medical articles",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "articles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "required": true
+                },
+                "abstract": {
+                  "type": "string",
+                  "required": true
+                }
+              }
+            },
+            "required": true
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["success", "error"]
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {"type": "string"},
+                "abstract": {"type": "string"},
+                "predicted_labels": {"type": "string"},
+                "prediction_matrix": {
+                  "type": "array",
+                  "items": {"type": "integer"}
+                },
+                "label_names": {
+                  "type": "array",
+                  "items": {"type": "string"}
+                },
+                "confidence": {"type": "number"},
+                "domains": {"type": "object"},
+                "is_mock": {"type": "boolean"}
+              }
+            }
+          },
+          "total_articles": {
+            "type": "integer"
+          },
+          "error": {
+            "type": "string"
+          }
+        }
+      },
+      "example_request": {
+        "articles": [
+          {
+            "title": "Cardiac arrhythmia detection using machine learning",
+            "abstract": "This study presents a novel approach for detecting cardiac arrhythmias..."
+          },
+          {
+            "title": "Neural network analysis of brain imaging data",
+            "abstract": "This research investigates the use of neural networks for analyzing brain imaging data..."
+          }
+        ]
+      }
+    },
+    "get_domains": {
+      "endpoint": "/api/domains",
+      "method": "GET",
+      "description": "Get information about medical domains",
+      "input_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["success"]
+          },
+          "domains": {
+            "type": "object",
+            "properties": {
+              "cardiovascular": {
+                "type": "object",
+                "properties": {
+                  "name": {"type": "string"},
+                  "description": {"type": "string"},
+                  "icon": {"type": "string"},
+                  "keywords": {
+                    "type": "array",
+                    "items": {"type": "string"}
+                  }
+                }
+              },
+              "neurological": {
+                "type": "object",
+                "properties": {
+                  "name": {"type": "string"},
+                  "description": {"type": "string"},
+                  "icon": {"type": "string"},
+                  "keywords": {
+                    "type": "array",
+                    "items": {"type": "string"}
+                  }
+                }
+              },
+              "hepatorenal": {
+                "type": "object",
+                "properties": {
+                  "name": {"type": "string"},
+                  "description": {"type": "string"},
+                  "icon": {"type": "string"},
+                  "keywords": {
+                    "type": "array",
+                    "items": {"type": "string"}
+                  }
+                }
+              },
+              "oncological": {
+                "type": "object",
+                "properties": {
+                  "name": {"type": "string"},
+                  "description": {"type": "string"},
+                  "icon": {"type": "string"},
+                  "keywords": {
+                    "type": "array",
+                    "items": {"type": "string"}
+                  }
+                }
+              }
+            }
+          },
+          "total_domains": {
+            "type": "integer"
+          }
+        }
+      },
+      "example_response": {
+        "status": "success",
+        "domains": {
+          "cardiovascular": {
+            "name": "Cardiovascular",
+            "description": "Heart and blood vessel related research",
+            "icon": "🫀",
+            "keywords": ["cardiac", "heart", "cardiovascular", "artery", "vein", "blood pressure"]
+          },
+          "neurological": {
+            "name": "Neurological",
+            "description": "Brain and nervous system related research", 
+            "icon": "🧠",
+            "keywords": ["brain", "neural", "neurological", "stroke", "alzheimer", "parkinson"]
+          },
+          "hepatorenal": {
+            "name": "Hepatorenal",
+            "description": "Liver and kidney related research",
+            "icon": "🫁", 
+            "keywords": ["liver", "kidney", "hepatorenal", "renal", "hepatitis", "dialysis"]
+          },
+          "oncological": {
+            "name": "Oncological",
+            "description": "Cancer and tumor related research",
+            "icon": "🦠",
+            "keywords": ["cancer", "tumor", "oncology", "chemotherapy", "malignant", "carcinoma"]
+          }
+        },
+        "total_domains": 4
+      }
+    },
+    "get_examples": {
+      "endpoint": "/api/examples",
+      "method": "GET", 
+      "description": "Get example articles for testing",
+      "input_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["success"]
+          },
+          "examples": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {"type": "string"},
+                "abstract": {"type": "string"}
+              }
+            }
+          },
+          "total_examples": {
+            "type": "integer"
+          }
+        }
+      },
+      "example_response": {
+        "status": "success",
+        "examples": [
+          {
+            "title": "Cardiac arrhythmia detection using machine learning algorithms",
+            "abstract": "This study presents a novel approach for detecting cardiac arrhythmias using machine learning techniques..."
+          },
+          {
+            "title": "Neural network analysis of brain imaging data for Alzheimer's detection",
+            "abstract": "This research investigates the use of neural networks for analyzing brain imaging data..."
+          }
+        ],
+        "total_examples": 5
+      }
+    },
+    "get_status": {
+      "endpoint": "/api/status",
+      "method": "GET",
+      "description": "Get model status and configuration",
+      "input_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["success"]
+          },
+          "is_loaded": {
+            "type": "boolean",
+            "description": "Whether the model is loaded successfully"
+          },
+          "model_path": {
+            "type": "string",
+            "description": "Path to the trained model"
+          },
+          "feature_pipeline_path": {
+            "type": "string",
+            "description": "Path to the feature pipeline"
+          }
+        }
+      },
+      "example_response": {
+        "status": "success",
+        "is_loaded": true,
+        "model_path": "../models/BR_xgboost_model.pkl",
+        "feature_pipeline_path": "../models/feature_pipeline.pkl"
+      }
+    }
+  },
+  "integration_guide": {
+    "vercel_functions": {
+      "description": "For Vercel deployment, create API routes in the api/ directory",
+      "file_structure": [
+        "api/classify-single.js",
+        "api/classify-batch.js", 
+        "api/domains.js",
+        "api/examples.js",
+        "api/status.js"
+      ],
+      "example_function": {
+        "file": "api/classify-single.js",
+        "content": "export default async function handler(req, res) { /* Implementation */ }"
+      }
+    },
+    "python_integration": {
+      "description": "Import the RealTimeClassifier class from real_time_classifier.py",
+      "example": "from real_time_classifier import RealTimeClassifier, api_classify_single"
+    },
+    "error_handling": {
+      "common_errors": [
+        "Model not loaded - falls back to mock predictions",
+        "Invalid input format - returns error status",
+        "Missing required fields - returns error status"
+      ]
+    }
+  }
+}
