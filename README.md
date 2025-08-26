@@ -1,108 +1,177 @@
-# Medical Article Classification - BR + XGBoost Model
+# 🏥 Medical Article Classification System
 
-## Overview
-This project implements a Binary Relevance + XGBoost multi-label classification system for medical articles. The system classifies articles into one or more domains: Cardiovascular, Neurological, Hepatorenal, or Oncological based on title and abstract content.
+<div align="center">
 
-## Project Structure
-```
-model12/
-├── input/                 # Input data
-model12/
-├── input/                 # Input data
-│   └── challenge_data.csv
-├── models/               # Trained models
-│   ├── BR_xgboost_model.pkl
-│   └── feature_pipeline.pkl
-├── output/               # Results and visualizations
-├── src_clean/           # Simplified source code
-│   ├── data/            # Data processing
-│   ├── features/        # Feature engineering
-│   ├── models/          # BR + XGBoost model
-│   ├── train_model.py   # Training pipeline
-│   └── test_model.py    # Testing script
-├── tests_clean/         # Unit tests
-├── Pipfile              # Dependencies
-└── README_CLEAN.md     # This file
-```
+![Python](https://img.shields.io/badge/Python-3.13-blue.svg)
+![XGBoost](https://img.shields.io/badge/XGBoost-2.0-green.svg)
+![Multi-Label](https://img.shields.io/badge/Multi--Label-Classification-orange.svg)
+![F1 Score](https://img.shields.io/badge/F1--Score-0.8933-brightgreen.svg)
 
-## Model Performance
-- **Strategy**: Binary Relevance (BR)
-- **Algorithm**: XGBoost
-- **Weighted F1 Score**: 0.8933
-- **Hamming Loss**: 0.0677
-- **Subset Accuracy**: 0.7602
+**Advanced Multi-Label Classification for Medical Literature**
 
-## Setup Instructions
+[![Model Performance](https://img.shields.io/badge/Weighted%20F1-0.8933-brightgreen)](https://github.com/your-repohttps://github.com/JuanCSanchezH/AI-Biomedical-Classification-Challenge)
+[![Hamming Loss](https://img.shields.io/badge/Hamming%20Loss-0.0677-green)](https://github.com/JuanCSanchezH/AI-Biomedical-Classification-Challenge)
+[![Training Time](https://img.shields.io/badge/Training%20Time-5.23s-blue)](https://github.com/JuanCSanchezH/AI-Biomedical-Classification-Challenge)
 
-### Prerequisites
-- Python 3.13
-- pipenv
+</div>
+
+---
+
+## 🎯 Project Overview
+
+This project implements a state-of-the-art **Binary Relevance + XGBoost** system for classifying medical articles into multiple domains. The system achieves excellent performance with a **Weighted F1 Score of 0.8933** and can classify articles into:
+
+- 🫀 **Cardiovascular**
+- 🧠 **Neurological** 
+- 🫁 **Hepatorenal**
+- 🦠 **Oncological**
+
+## 🚀 Quick Start
 
 ### Installation
-1. Install dependencies:
-   ```bash
-   pipenv install
-   ```
-
-### Usage
-
-#### Training the Model
 ```bash
-pipenv run python src_clean/train_model.py
+# Clone the repository
+git clone <repository-url>
+cd model12
+
+# Install dependencies
+pipenv install
+
+# Activate environment
+pipenv shell
 ```
 
-#### Testing with New Data
-```bash
-pipenv run python src_clean/test_model.py
-```
+### Usage Examples
 
-#### Running Tests
-```bash
-pipenv run pytest tests_clean/ -v
-```
-
-## Model Testing Examples
-
-### Single Article
+#### 🎯 Single Article Classification
 ```python
-from src_clean.test_model import ModelTester
+from src.test_model import ModelTester
 
 tester = ModelTester()
 result = tester.predict_single(
     title="Cardiac arrhythmia detection using machine learning",
     abstract="This study presents a novel approach for detecting cardiac arrhythmias..."
 )
+
 print(f"Predicted labels: {result['predicted_labels']}")
+# Output: cardiovascular
 ```
 
-### Multiple Articles
+#### 📚 Batch Classification
 ```python
 titles = ["Title 1", "Title 2", "Title 3"]
 abstracts = ["Abstract 1", "Abstract 2", "Abstract 3"]
 
 results = tester.predict_multiple(titles, abstracts)
 for result in results:
-    print(f"Title: {result['title']}")
     print(f"Labels: {result['predicted_labels']}")
 ```
 
-## Output Labels
-The model predicts one or more of these labels:
-- `cardiovascular`
-- `neurological` 
-- `hepatorenal`
-- `oncological`
+## 📊 Performance Metrics
 
-**Output format**:
-- Single label: `"cardiovascular"`
-- Multiple labels: `"cardiovascular|neurological"`
-- No labels: `"none"`
+| Metric | Value | Status |
+|--------|-------|--------|
+| **Weighted F1 Score** | 0.8933 | 🟢 Excellent |
+| **Hamming Loss** | 0.0677 | 🟢 Excellent |
+| **Subset Accuracy** | 0.7602 | 🟡 Good |
+| **Training Time** | 5.23s | 🟢 Fast |
 
-## Dependencies
-- **Data Processing**: pandas, numpy, scikit-learn
-- **Machine Learning**: xgboost
-- **Text Processing**: nltk
-- **Testing**: pytest
+## 🏗️ Architecture
 
-## License
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Text Input    │───▶│  Preprocessing  │───▶│ Feature Engine  │
+│  (Title + Abs)  │    │   (TF-IDF)      │    │   (5000 feat)   │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+                                                        │
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│ Multi-Label     │◀───│ BR + XGBoost    │◀───│   Model         │
+│ Output          │    │ Classifier      │    │   Training      │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+```
+
+## 📁 Project Structure
+
+```
+model12/
+├── 🗂️ input/                    # Dataset
+│   └── challenge_data.csv
+├── 🤖 models/                   # Trained models
+│   ├── BR_xgboost_model.pkl
+│   └── feature_pipeline.pkl
+├── 📊 output/                   # Results & reports
+│   ├── comprehensive_report.png
+│   └── COMPREHENSIVE_REPORT.md
+├── 💻 src/                      # Source code
+│   ├── data/loader.py
+│   ├── features/vectorizer.py
+│   ├── models/br_xgboost_model.py
+│   ├── train_model.py
+│   └── test_model.py
+└── 🧪 tests/                    # Unit tests
+    └── test_br_xgboost_model.py
+```
+
+## 🔧 Commands
+
+### Training
+```bash
+pipenv run python src/train_model.py
+```
+
+### Testing
+```bash
+pipenv run python src/test_model.py
+```
+
+### Unit Tests
+```bash
+pipenv run pytest tests/ -v
+```
+
+## 📈 Model Comparison
+
+| Strategy | Algorithm | F1 Score | Rank |
+|----------|-----------|----------|------|
+| **BR** | **XGBoost** | **0.8933** | 🥇 **1st** |
+| CC | XGBoost | 0.8916 | 🥈 2nd |
+| BR | SVM | 0.8325 | 🥉 3rd |
+
+## 🎨 Key Features
+
+- ✅ **Multi-Label Classification**: Handle articles with multiple domains
+- ✅ **High Performance**: 89.33% weighted F1 score
+- ✅ **Fast Training**: 5.23 seconds training time
+- ✅ **Easy Deployment**: Simple API for predictions
+- ✅ **Comprehensive Testing**: Unit tests and validation
+- ✅ **Detailed Reports**: Complete analysis and documentation
+
+## 📋 Requirements
+
+- Python 3.13+
+- pipenv
+- 4GB RAM (recommended)
+- 500MB disk space
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests
+5. Submit a pull request
+
+## 📄 License
+
 This project is part of a machine learning challenge.
+
+---
+
+<div align="center">
+
+**Developed by HealthCoders Lab Team 👩‍💻👨‍💻**
+
+[![Report](https://img.shields.io/badge/📊-View%20Report-blue)](output/COMPREHENSIVE_REPORT.md)
+[![Results](https://img.shields.io/badge/📈-View%20Results-green)](output/)
+
+</div>
