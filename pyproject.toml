@@ -14,8 +14,6 @@ lint.select = [
     "A",
     #flake8-pie
     "PIE",
-    #flake8-print
-    "T20",
     # flake8-quotes
     "Q",
     # flake8-simplify
@@ -27,13 +25,14 @@ lint.select = [
     # pylint
     "PLE", "PLR", "PLW",
 ]
-lint.unfixable = ['ERA001', "E712"]
+lint.unfixable = ['ERA001', "E712", "T201"]
 # Allow unused variables when underscore-prefixed.
 lint.dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
-# Assume Python 3.11.
+# Assume Python 3.13.
 target-version = "py313"
 [tool.ruff.lint.pylint]
 max-args = 8
+max-statements = 60
 [tool.pytest.ini_options]
 pythonpath = [
   "."

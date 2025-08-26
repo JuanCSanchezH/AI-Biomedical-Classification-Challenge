@@ -1,1 +1,0 @@
-# Medical Article Classification Package
