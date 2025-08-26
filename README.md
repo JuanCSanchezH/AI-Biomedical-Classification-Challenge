@@ -1,35 +1,36 @@
-# Medical Article Classification Challenge
+# Medical Article Classification - BR + XGBoost Model
 
 ## Overview
-This project implements a multi-label classification system for medical articles using machine learning techniques. The system classifies articles into one or more domains: Cardiovascular, Neurological, Hepatorenal, or Oncological based on title and abstract content.
-
-## Problem Statement
-Develop an AI system capable of classifying medical articles into multiple domains using only title and abstract as inputs, applying traditional machine learning techniques, natural language models, or hybrid approaches.
-
-## Dataset
-- **Size**: 3,565 articles
-- **Format**: CSV with columns: title, abstract, group (target)
-- **Target**: Multi-label classification with 4 unique domains
-- **Features**: Title and abstract text
+This project implements a Binary Relevance + XGBoost multi-label classification system for medical articles. The system classifies articles into one or more domains: Cardiovascular, Neurological, Hepatorenal, or Oncological based on title and abstract content.
 
 ## Project Structure
 ```
 model12/
 ├── input/                 # Input data
+model12/
+├── input/                 # Input data
 │   └── challenge_data.csv
-├── models/               # Trained models and model code
-├── output/               # Results, charts, and predictions
-├── src/                  # Source code
-│   ├── data/            # Data processing modules
+├── models/               # Trained models
+│   ├── BR_xgboost_model.pkl
+│   └── feature_pipeline.pkl
+├── output/               # Results and visualizations
+├── src_clean/           # Simplified source code
+│   ├── data/            # Data processing
 │   ├── features/        # Feature engineering
-│   ├── models/          # Model implementations
-│   └── utils/           # Utility functions
-├── notebooks/           # Jupyter notebooks for exploration
-├── tests/               # Unit tests
+│   ├── models/          # BR + XGBoost model
+│   ├── train_model.py   # Training pipeline
+│   └── test_model.py    # Testing script
+├── tests_clean/         # Unit tests
 ├── Pipfile              # Dependencies
-├── pyproject.toml       # Project configuration
-└── README.md           # This file
+└── README_CLEAN.md     # This file
 ```
+
+## Model Performance
+- **Strategy**: Binary Relevance (BR)
+- **Algorithm**: XGBoost
+- **Weighted F1 Score**: 0.8933
+- **Hamming Loss**: 0.0677
+- **Subset Accuracy**: 0.7602
 
 ## Setup Instructions
 
@@ -38,57 +39,70 @@ model12/
 - pipenv
 
 ### Installation
-1. Clone the repository
-2. Install dependencies:
+1. Install dependencies:
    ```bash
    pipenv install
    ```
 
 ### Usage
-1. Activate the environment:
-   ```bash
-   pipenv shell
-   ```
 
-2. Run the main pipeline:
-   ```bash
-   pipenv run python src/main.py
-   ```
+#### Training the Model
+```bash
+pipenv run python src_clean/train_model.py
+```
 
-3. Run tests:
-   ```bash
-   pipenv run pytest
-   ```
+#### Testing with New Data
+```bash
+pipenv run python src_clean/test_model.py
+```
 
-## Model Strategies
-The project implements three multi-label classification strategies:
-- **Binary Relevance (BR)**: Treats each label independently
-- **Classifier Chains (CC)**: Uses label dependencies
-- **Label Powerset (LP)**: Treats each label combination as a class
+#### Running Tests
+```bash
+pipenv run pytest tests_clean/ -v
+```
 
-## Base Algorithms
-- Logistic Regression
-- XGBoost
-- Support Vector Machine (SVM)
+## Model Testing Examples
 
-## Evaluation Metrics
-- Hamming Loss
-- Micro-F1 and Macro-F1
-- Subset Accuracy
-- Weighted F1 Score
+### Single Article
+```python
+from src_clean.test_model import ModelTester
 
-## Output
-Results are saved in the `output/` folder including:
-- Model performance charts
-- Comparison tables
-- Confusion matrices
-- Predictions on test data
+tester = ModelTester()
+result = tester.predict_single(
+    title="Cardiac arrhythmia detection using machine learning",
+    abstract="This study presents a novel approach for detecting cardiac arrhythmias..."
+)
+print(f"Predicted labels: {result['predicted_labels']}")
+```
 
-## Code Quality
-- Follows PEP8 standards
-- Uses ruff for linting and formatting
-- Pre-commit hooks for code quality
-- Comprehensive test coverage
+### Multiple Articles
+```python
+titles = ["Title 1", "Title 2", "Title 3"]
+abstracts = ["Abstract 1", "Abstract 2", "Abstract 3"]
+
+results = tester.predict_multiple(titles, abstracts)
+for result in results:
+    print(f"Title: {result['title']}")
+    print(f"Labels: {result['predicted_labels']}")
+```
+
+## Output Labels
+The model predicts one or more of these labels:
+- `cardiovascular`
+- `neurological` 
+- `hepatorenal`
+- `oncological`
+
+**Output format**:
+- Single label: `"cardiovascular"`
+- Multiple labels: `"cardiovascular|neurological"`
+- No labels: `"none"`
+
+## Dependencies
+- **Data Processing**: pandas, numpy, scikit-learn
+- **Machine Learning**: xgboost
+- **Text Processing**: nltk
+- **Testing**: pytest
 
 ## License
-This project is part of a machine learning challenge. 
+This project is part of a machine learning challenge.

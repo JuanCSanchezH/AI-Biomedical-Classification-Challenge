@@ -1,1 +1,1 @@
-"""Model implementations for multi-label classification."""
+"""Simplified model implementation for BR + XGBoost."""
