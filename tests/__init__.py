@@ -1,1 +1,1 @@
-"""Test suite for medical article classification project."""
+"""Simplified test suite for BR + XGBoost model."""
