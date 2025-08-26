@@ -1,4 +1,4 @@
-# Medical Article Classification: Comprehensive Analysis Report
+# Medical Article Classification: Comprehensive Analysis Report - Machine Learning Model
 
 ## 📊 Executive Summary
 
