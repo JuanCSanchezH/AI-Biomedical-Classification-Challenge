@@ -16,33 +16,13 @@ Study all this project. Extract all insights and the most important metrics from
 
 ## Prompt 2 – Visualization
 
-**Goal:** Clean project keeping only selected model BR_XGB and prepare a test file for new inputs.
-
 ```
-After choosing XGBoost with Binary Relevance (BR), clean project step by step:
+Act as a BI developer, I need your help to build the visualization for a challenge AI model classification developed in Python. The Python files and structures are located in the files provided, so study them. Think well and respond in detail to each step of the instructions before continuing to the next. Follow the steps bellow:
 
-=== CLEANING INSTRUCTIONS ===
-1. Delete folders, files, and libraries not needed.
-2. Keep only Python code for the selected model (BR_XGB), except 'output' folder.
-3. Give proper names to all files after changes.
-4. Create a new Python file to test the selected model with new inputs, not training/test data.
-5. Check that everything works correctly.
-=== END CLEANING ===
-```
-
-## Prompt 3 – Documentation / Report
-
-**Goal:** Create final report including preprocessing, model choice, metrics, and charts.
-
-```
-After finishing model and metrics, create a report step by step:
-
-=== REPORT INSTRUCTIONS ===
-1. EDA and problem understanding
-2. Explain preprocessing and decisions clearly
-3. Model selection and design: chosen method, multi-label adaptation
-4. Validation and metrics: strategy, correct metrics, error analysis; main metric: Weighted F1; check confusion matrix
-5. Save report in a file with graphics and clear design in 'output' folder
-6. Update README.md with clear and creative design
-=== END REPORT ===
+=== START OF VISUALIZATION INSTRUCTIONS ===
+Before studied all provided files execute the next steps:
+1. Create interactive dashboards and charts using the found data. Be creative and ingenious and don’t forget to show the most important metrics, analysis and graphics that shows the model performance and results. Includes inside any chart analysis a confusion matrix
+2. Create an interactive demo classification in real time. It also must have client-oriented focus, understandable and creative interaction.
+3. Verify if all the charts and dashboards contains data to visualize, important to procure no emptiness.
+=== END OF VISUALIZATION INSTRUCTIONS ===
 ```

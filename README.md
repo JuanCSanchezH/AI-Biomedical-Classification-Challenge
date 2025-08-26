@@ -215,7 +215,7 @@ python3 demo_classifier.py
 open v0_visualization/vo_documentation.md
 ```
 
-For detailed V0 integration guide, see [`v0_visualization/README.md`](v0_visualization/README.md).
+For detailed V0 integration guide, see [`v0_documentation`](docs/vo/).
 
 ## 📄 License
 
@@ -229,6 +229,6 @@ This project is part of a machine learning challenge.
 
 [![Report](https://img.shields.io/badge/📊-View%20Report-blue)](docs/model/model_documentation)
 [![Results](https://img.shields.io/badge/📈-View%20Results-green)](output/)
-[![V0 Demo](https://img.shields.io/badge/🎨-V0%20Demo-purple)](v0_visualization/)
+[![V0 Demo](https://img.shields.io/badge/🎨-V0%20Demo-purple)](https://v0.app/chat/v0visualization-MG9nAtpewc5)
 
 </div>
