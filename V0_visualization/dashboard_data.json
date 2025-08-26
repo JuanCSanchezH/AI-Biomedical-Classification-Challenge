@@ -1,0 +1,284 @@
+{
+  "project_overview": {
+    "title": "Medical Article Classification System",
+    "description": "Advanced Multi-Label Classification for Medical Literature using Binary Relevance + XGBoost",
+    "performance_summary": {
+      "weighted_f1_score": 0.8933,
+      "hamming_loss": 0.0677,
+      "subset_accuracy": 0.7602,
+      "training_time_seconds": 5.23,
+      "status": "Excellent"
+    }
+  },
+  "dataset_statistics": {
+    "total_articles": 3565,
+    "train_samples": 2852,
+    "test_samples": 713,
+    "features": ["Title", "Abstract"],
+    "target_domains": ["cardiovascular", "neurological", "hepatorenal", "oncological"]
+  },
+  "label_distribution": {
+    "single_labels": {
+      "neurological": 950,
+      "cardiovascular": 614,
+      "hepatorenal": 496,
+      "oncological": 215
+    },
+    "combined_labels": {
+      "neurological|cardiovascular": 273,
+      "neurological|hepatorenal": 180,
+      "cardiovascular|hepatorenal": 176,
+      "neurological|oncological": 118,
+      "hepatorenal|oncological": 91,
+      "cardiovascular|oncological": 66,
+      "neurological|hepatorenal|oncological": 21,
+      "neurological|cardiovascular|hepatorenal": 21,
+      "neurological|cardiovascular|oncological": 9,
+      "neurological|cardiovascular|hepatorenal|oncological": 6,
+      "cardiovascular|hepatorenal|oncological": 5
+    }
+  },
+  "model_comparison": {
+    "strategies": [
+      {
+        "rank": 1,
+        "strategy": "BR",
+        "algorithm": "XGBoost",
+        "weighted_f1": 0.8933,
+        "micro_f1": 0.8933,
+        "macro_f1": 0.8932,
+        "subset_accuracy": 0.7602,
+        "hamming_loss": 0.0677,
+        "training_time": 5.23,
+        "status": "Best"
+      },
+      {
+        "rank": 2,
+        "strategy": "CC",
+        "algorithm": "XGBoost",
+        "weighted_f1": 0.8916,
+        "micro_f1": 0.8934,
+        "macro_f1": 0.8898,
+        "subset_accuracy": 0.763,
+        "hamming_loss": 0.0684,
+        "training_time": 4.08,
+        "status": "Good"
+      },
+      {
+        "rank": 3,
+        "strategy": "BR",
+        "algorithm": "SVM",
+        "weighted_f1": 0.8325,
+        "micro_f1": 0.8412,
+        "macro_f1": 0.8238,
+        "subset_accuracy": 0.6858,
+        "hamming_loss": 0.0968,
+        "training_time": 45.95,
+        "status": "Good"
+      },
+      {
+        "rank": 4,
+        "strategy": "LP",
+        "algorithm": "Logistic",
+        "weighted_f1": 0.8152,
+        "micro_f1": 0.8252,
+        "macro_f1": 0.8053,
+        "subset_accuracy": 0.6578,
+        "hamming_loss": 0.1041,
+        "training_time": 0.30,
+        "status": "Fair"
+      },
+      {
+        "rank": 5,
+        "strategy": "LP",
+        "algorithm": "SVM",
+        "weighted_f1": 0.8152,
+        "micro_f1": 0.8252,
+        "macro_f1": 0.8053,
+        "subset_accuracy": 0.6578,
+        "hamming_loss": 0.1041,
+        "training_time": 0.28,
+        "status": "Fair"
+      },
+      {
+        "rank": 6,
+        "strategy": "LP",
+        "algorithm": "XGBoost",
+        "weighted_f1": 0.8152,
+        "micro_f1": 0.8252,
+        "macro_f1": 0.8053,
+        "subset_accuracy": 0.6578,
+        "hamming_loss": 0.1041,
+        "training_time": 0.28,
+        "status": "Fair"
+      },
+      {
+        "rank": 7,
+        "strategy": "CC",
+        "algorithm": "SVM",
+        "weighted_f1": 0.8109,
+        "micro_f1": 0.8259,
+        "macro_f1": 0.7959,
+        "subset_accuracy": 0.6634,
+        "hamming_loss": 0.1038,
+        "training_time": 39.36,
+        "status": "Fair"
+      },
+      {
+        "rank": 8,
+        "strategy": "BR",
+        "algorithm": "Logistic",
+        "weighted_f1": 0.8093,
+        "micro_f1": 0.8257,
+        "macro_f1": 0.7929,
+        "subset_accuracy": 0.669,
+        "hamming_loss": 0.1048,
+        "training_time": 0.24,
+        "status": "Fair"
+      },
+      {
+        "rank": 9,
+        "strategy": "CC",
+        "algorithm": "Logistic",
+        "weighted_f1": 0.7959,
+        "micro_f1": 0.8135,
+        "macro_f1": 0.7783,
+        "subset_accuracy": 0.6452,
+        "hamming_loss": 0.1122,
+        "training_time": 0.27,
+        "status": "Fair"
+      }
+    ]
+  },
+  "feature_engineering": {
+    "text_preprocessing": {
+      "steps": [
+        "Lowercase conversion",
+        "Special character removal",
+        "Whitespace normalization",
+        "Word tokenization",
+        "Stop words removal",
+        "Lemmatization"
+      ],
+      "feature_extraction": {
+        "method": "TF-IDF Vectorization",
+        "n_gram_range": [1, 2],
+        "max_features": 5000,
+        "min_df": 2,
+        "max_df": 0.95
+      }
+    }
+  },
+  "model_architecture": {
+    "approach": "Binary Relevance + XGBoost",
+    "description": "Independent binary classifiers for each medical domain",
+    "advantages": [
+      "Independent label training",
+      "Fast training",
+      "Easy interpretation",
+      "Scalability",
+      "Robust performance"
+    ]
+  },
+  "performance_metrics": {
+    "primary_metrics": {
+      "weighted_f1_score": {
+        "value": 0.8933,
+        "description": "Balance between precision and recall",
+        "interpretation": "Excellent performance"
+      },
+      "hamming_loss": {
+        "value": 0.0677,
+        "description": "Fraction of incorrectly predicted labels",
+        "interpretation": "Only 6.77% of label predictions are incorrect"
+      }
+    },
+    "supporting_metrics": {
+      "micro_f1": {
+        "value": 0.8933,
+        "description": "Overall precision and recall across all labels"
+      },
+      "macro_f1": {
+        "value": 0.8932,
+        "description": "Average F1 across all labels (equal weight)"
+      },
+      "subset_accuracy": {
+        "value": 0.7602,
+        "description": "76.02% of articles have all labels correctly predicted"
+      }
+    }
+  },
+  "error_analysis": {
+    "false_positives": 0.15,
+    "false_negatives": 0.12,
+    "label_imbalance": 0.08,
+    "text_complexity": 0.05,
+    "main_causes": [
+      "Medical term overlap between domains",
+      "Complex multi-domain articles",
+      "Rare label combinations",
+      "Very long or technical abstracts"
+    ]
+  },
+  "domain_performance": {
+    "cardiovascular": {
+      "performance": "High precision",
+      "confusion": "Some confusion with hepatorenal",
+      "characteristics": "Clear cardiac terminology"
+    },
+    "neurological": {
+      "performance": "Excellent",
+      "confusion": "Clear domain separation",
+      "characteristics": "Distinct brain and nervous system terms"
+    },
+    "hepatorenal": {
+      "performance": "Good",
+      "confusion": "Some overlap with cardiovascular",
+      "characteristics": "Liver and kidney terminology"
+    },
+    "oncological": {
+      "performance": "Strong",
+      "confusion": "Distinct medical terminology",
+      "characteristics": "Cancer-specific vocabulary"
+    }
+  },
+  "text_analysis": {
+    "title_length": {
+      "min": 20,
+      "max": 294,
+      "mean": 69,
+      "median": 55
+    },
+    "abstract_length": {
+      "min": 180,
+      "max": 3814,
+      "mean": 697,
+      "median": 312
+    },
+    "distribution": "Right-skewed with outliers in abstract lengths"
+  },
+  "practical_applications": [
+    "Medical literature classification",
+    "Research discovery",
+    "Knowledge management",
+    "Literature search improvement",
+    "Article recommendation"
+  ],
+  "limitations_and_future_work": [
+    "Address label imbalance for rare combinations",
+    "Expand to more medical specialties",
+    "Optimize for real-time processing",
+    "Enhance model interpretability"
+  ],
+  "technical_specifications": {
+    "python_version": "3.13+",
+    "key_dependencies": [
+      "XGBoost 2.0",
+      "scikit-learn",
+      "pandas",
+      "numpy"
+    ],
+    "memory_requirements": "4GB RAM (recommended)",
+    "disk_space": "500MB"
+  }
+}

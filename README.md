@@ -32,7 +32,7 @@ This project implements a state-of-the-art **Binary Relevance + XGBoost** system
 ```bash
 # Clone the repository
 git clone <repository-url>
-cd model12
+cd AI-Biomedical-Classification-Challenge
 
 # Install dependencies
 pipenv install
@@ -93,7 +93,7 @@ for result in results:
 ## 📁 Project Structure
 
 ```
-model12/
+AI-Biomedical-Classification-Challenge/
 ├── 🗂️ input/                    # Dataset
 │   └── challenge_data.csv
 ├── 🤖 models/                   # Trained models
@@ -101,15 +101,27 @@ model12/
 │   └── feature_pipeline.pkl
 ├── 📊 output/                   # Results & reports
 │   ├── comprehensive_report.png
-│   └── COMPREHENSIVE_REPORT.md
+│   ├── COMPREHENSIVE_REPORT.md
+│   ├── model_comparison_table.csv
+│   ├── multiple_predictions.csv
+│   └── test_predictions.csv
 ├── 💻 src/                      # Source code
 │   ├── data/loader.py
 │   ├── features/vectorizer.py
 │   ├── models/br_xgboost_model.py
 │   ├── train_model.py
 │   └── test_model.py
-└── 🧪 tests/                    # Unit tests
-    └── test_br_xgboost_model.py
+├── 🧪 tests/                    # Unit tests
+│   └── test_br_xgboost_model.py
+└── 🎨 v0_visualization/         # V0 Dashboard & Demo Package
+    ├── 📊 dashboard_data.json          # Comprehensive project insights
+    ├── 📈 chart_data.json              # Chart-ready data for V0
+    ├── 🤖 real_time_classifier.py      # Full-featured classification API
+    ├── 🎮 demo_classifier.py           # Standalone demo (no dependencies)
+    ├── 🔌 api_endpoints.json           # API endpoint definitions
+    ├── 📖 README.md                    # V0 integration guide
+    ├── 📋 SUMMARY.md                   # Package summary
+    └── 📁 FILE_STRUCTURE.md            # File structure overview
 ```
 
 ## 🔧 Commands
@@ -129,6 +141,12 @@ pipenv run python src/test_model.py
 pipenv run pytest tests/ -v
 ```
 
+### V0 Demo
+```bash
+cd v0_visualization
+python3 demo_classifier.py
+```
+
 ## 📈 Model Comparison
 
 | Strategy | Algorithm | F1 Score | Rank |
@@ -145,6 +163,7 @@ pipenv run pytest tests/ -v
 - ✅ **Easy Deployment**: Simple API for predictions
 - ✅ **Comprehensive Testing**: Unit tests and validation
 - ✅ **Detailed Reports**: Complete analysis and documentation
+- ✅ **V0 Integration Ready**: Complete dashboard and demo package
 
 ## 📋 Requirements
 
@@ -161,6 +180,43 @@ pipenv run pytest tests/ -v
 4. Add tests
 5. Submit a pull request
 
+## 🎨 V0 Visualization Package
+
+The project includes a complete **V0 Visualization Package** for creating interactive dashboards and real-time classification demos:
+
+### 📊 Dashboard Data
+- **`dashboard_data.json`**: Complete project insights and metrics
+- **`chart_data.json`**: Chart-ready data for V0 visualizations
+- **Performance metrics**: F1 scores, accuracy, training time
+- **Model comparison**: 9 different strategies tested
+- **Dataset statistics**: 3,565 articles, label distribution
+
+### 🤖 Real-time Classification
+- **`real_time_classifier.py`**: Full-featured Python API
+- **`demo_classifier.py`**: Standalone demo (no dependencies)
+- **Single & batch classification** with confidence scores
+- **Domain information** with icons and descriptions
+- **Example articles** for testing
+- **Mock predictions** when real model unavailable
+
+### 🔌 API Integration
+- **`api_endpoints.json`**: Complete API specification
+- **Vercel deployment** ready
+- **Error handling** and validation
+- **Input/output schemas** for validation
+
+### 🚀 Quick Start with V0
+```bash
+# Run the demo
+cd v0_visualization
+python3 demo_classifier.py
+
+# View documentation
+open v0_visualization/README.md
+```
+
+For detailed V0 integration guide, see [`v0_visualization/README.md`](v0_visualization/README.md).
+
 ## 📄 License
 
 This project is part of a machine learning challenge.
@@ -173,5 +229,6 @@ This project is part of a machine learning challenge.
 
 [![Report](https://img.shields.io/badge/📊-View%20Report-blue)](output/COMPREHENSIVE_REPORT.md)
 [![Results](https://img.shields.io/badge/📈-View%20Results-green)](output/)
+[![V0 Demo](https://img.shields.io/badge/🎨-V0%20Demo-purple)](v0_visualization/)
 
 </div>
