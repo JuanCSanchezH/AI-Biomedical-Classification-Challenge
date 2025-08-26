@@ -1,0 +1,30 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pandas = "*"
+numpy = "*"
+scikit-learn = "*"
+scipy = "*"
+xgboost = "*"
+nltk = "*"
+matplotlib = "*"
+seaborn = "*"
+tqdm = "*"
+joblib = "*"
+jupyter = "*"
+ipykernel = "*"
+pytest = "*"
+pytest-cov = "*"
+ruff = "*"
+
+[dev-packages]
+pytest = "*"
+pytest-cov = "*"
+ruff = "*"
+pre-commit = "*"
+
+[requires]
+python_version = "3.13"

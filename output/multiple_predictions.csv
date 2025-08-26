@@ -1,0 +1,21 @@
+title;abstract;predicted_labels;predicted_cardiovascular;predicted_hepatorenal;predicted_neurological;predicted_oncological
+Neural network analysis of brain imaging data for Alzheimer's detection;"
+        This research investigates the use of neural networks for analyzing brain 
+        imaging data to detect early signs of Alzheimer's disease. We used MRI scans 
+        from 300 patients and achieved 88% accuracy in early detection.
+        ";neurological;0;0;1;0
+Liver function tests in patients with cardiovascular disease;"
+        We examined liver function in 150 patients with cardiovascular disease. 
+        Results showed significant correlations between cardiac markers and liver 
+        enzyme levels, suggesting potential organ interactions.
+        ";cardiovascular|hepatorenal;1;1;0;0
+Novel chemotherapy agents for lung cancer treatment;"
+        A new chemotherapy protocol was tested on 200 lung cancer patients. 
+        The treatment showed 40% improvement in survival rates compared to 
+        standard chemotherapy regimens.
+        ";oncological;0;0;0;1
+Stroke rehabilitation using virtual reality technology;"
+        Virtual reality technology was implemented for stroke rehabilitation 
+        in 80 patients. The system showed 60% improvement in motor function 
+        recovery compared to traditional rehabilitation methods.
+        ";none;0;0;0;0

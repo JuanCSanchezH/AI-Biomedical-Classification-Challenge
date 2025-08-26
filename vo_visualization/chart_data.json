@@ -1,0 +1,242 @@
+{
+  "performance_charts": {
+    "model_comparison_radar": {
+      "labels": ["Weighted F1", "Micro F1", "Macro F1", "Subset Accuracy", "Training Time (s)"],
+      "datasets": [
+        {
+          "label": "BR + XGBoost (Best)",
+          "data": [0.8933, 0.8933, 0.8932, 0.7602, 5.23],
+          "backgroundColor": "rgba(54, 162, 235, 0.2)",
+          "borderColor": "rgba(54, 162, 235, 1)",
+          "borderWidth": 2
+        },
+        {
+          "label": "CC + XGBoost",
+          "data": [0.8916, 0.8934, 0.8898, 0.763, 4.08],
+          "backgroundColor": "rgba(255, 99, 132, 0.2)",
+          "borderColor": "rgba(255, 99, 132, 1)",
+          "borderWidth": 2
+        },
+        {
+          "label": "BR + SVM",
+          "data": [0.8325, 0.8412, 0.8238, 0.6858, 45.95],
+          "backgroundColor": "rgba(255, 205, 86, 0.2)",
+          "borderColor": "rgba(255, 205, 86, 1)",
+          "borderWidth": 2
+        }
+      ]
+    },
+    "metrics_bar_chart": {
+      "labels": ["Weighted F1", "Hamming Loss", "Subset Accuracy", "Training Time (s)"],
+      "datasets": [
+        {
+          "label": "BR + XGBoost",
+          "data": [0.8933, 0.0677, 0.7602, 5.23],
+          "backgroundColor": [
+            "rgba(54, 162, 235, 0.8)",
+            "rgba(255, 99, 132, 0.8)",
+            "rgba(255, 205, 86, 0.8)",
+            "rgba(75, 192, 192, 0.8)"
+          ]
+        }
+      ]
+    }
+  },
+  "label_distribution_charts": {
+    "single_labels_pie": {
+      "labels": ["Neurological", "Cardiovascular", "Hepatorenal", "Oncological"],
+      "datasets": [
+        {
+          "data": [950, 614, 496, 215],
+          "backgroundColor": [
+            "rgba(255, 99, 132, 0.8)",
+            "rgba(54, 162, 235, 0.8)",
+            "rgba(255, 205, 86, 0.8)",
+            "rgba(75, 192, 192, 0.8)"
+          ],
+          "borderWidth": 2,
+          "borderColor": "#fff"
+        }
+      ]
+    },
+    "combined_labels_bar": {
+      "labels": [
+        "Neuro|Cardio", "Neuro|Hepato", "Cardio|Hepato", "Neuro|Onco", 
+        "Hepato|Onco", "Cardio|Onco", "Neuro|Hepato|Onco", "Neuro|Cardio|Hepato",
+        "Neuro|Cardio|Onco", "All Four", "Cardio|Hepato|Onco"
+      ],
+      "datasets": [
+        {
+          "label": "Number of Articles",
+          "data": [273, 180, 176, 118, 91, 66, 21, 21, 9, 6, 5],
+          "backgroundColor": "rgba(54, 162, 235, 0.8)",
+          "borderColor": "rgba(54, 162, 235, 1)",
+          "borderWidth": 1
+        }
+      ]
+    }
+  },
+  "text_analysis_charts": {
+    "title_length_distribution": {
+      "labels": ["0-50", "51-100", "101-150", "151-200", "201-250", "251-300"],
+      "datasets": [
+        {
+          "label": "Number of Titles",
+          "data": [1200, 1400, 600, 250, 80, 35],
+          "backgroundColor": "rgba(255, 99, 132, 0.8)",
+          "borderColor": "rgba(255, 99, 132, 1)",
+          "borderWidth": 1
+        }
+      ]
+    },
+    "abstract_length_distribution": {
+      "labels": ["0-500", "501-1000", "1001-1500", "1501-2000", "2001-2500", "2501-3000", "3000+"],
+      "datasets": [
+        {
+          "label": "Number of Abstracts",
+          "data": [1800, 1200, 400, 120, 30, 10, 5],
+          "backgroundColor": "rgba(54, 162, 235, 0.8)",
+          "borderColor": "rgba(54, 162, 235, 1)",
+          "borderWidth": 1
+        }
+      ]
+    }
+  },
+  "error_analysis_charts": {
+    "error_types_pie": {
+      "labels": ["False Positives", "False Negatives", "Label Imbalance", "Text Complexity"],
+      "datasets": [
+        {
+          "data": [15, 12, 8, 5],
+          "backgroundColor": [
+            "rgba(255, 99, 132, 0.8)",
+            "rgba(54, 162, 235, 0.8)",
+            "rgba(255, 205, 86, 0.8)",
+            "rgba(75, 192, 192, 0.8)"
+          ],
+          "borderWidth": 2,
+          "borderColor": "#fff"
+        }
+      ]
+    }
+  },
+  "domain_performance_charts": {
+    "domain_metrics_radar": {
+      "labels": ["Precision", "Recall", "F1-Score", "Specificity", "Accuracy"],
+      "datasets": [
+        {
+          "label": "Cardiovascular",
+          "data": [0.92, 0.89, 0.90, 0.94, 0.91],
+          "backgroundColor": "rgba(255, 99, 132, 0.2)",
+          "borderColor": "rgba(255, 99, 132, 1)",
+          "borderWidth": 2
+        },
+        {
+          "label": "Neurological",
+          "data": [0.95, 0.93, 0.94, 0.96, 0.94],
+          "backgroundColor": "rgba(54, 162, 235, 0.2)",
+          "borderColor": "rgba(54, 162, 235, 1)",
+          "borderWidth": 2
+        },
+        {
+          "label": "Hepatorenal",
+          "data": [0.88, 0.86, 0.87, 0.92, 0.89],
+          "backgroundColor": "rgba(255, 205, 86, 0.2)",
+          "borderColor": "rgba(255, 205, 86, 1)",
+          "borderWidth": 2
+        },
+        {
+          "label": "Oncological",
+          "data": [0.91, 0.88, 0.89, 0.95, 0.92],
+          "backgroundColor": "rgba(75, 192, 192, 0.2)",
+          "borderColor": "rgba(75, 192, 192, 1)",
+          "borderWidth": 2
+        }
+      ]
+    }
+  },
+  "training_progress": {
+    "training_time_comparison": {
+      "labels": ["BR + XGBoost", "CC + XGBoost", "BR + SVM", "LP + Logistic", "LP + SVM", "LP + XGBoost", "CC + SVM", "BR + Logistic", "CC + Logistic"],
+      "datasets": [
+        {
+          "label": "Training Time (seconds)",
+          "data": [5.23, 4.08, 45.95, 0.30, 0.28, 0.28, 39.36, 0.24, 0.27],
+          "backgroundColor": "rgba(54, 162, 235, 0.8)",
+          "borderColor": "rgba(54, 162, 235, 1)",
+          "borderWidth": 1
+        }
+      ]
+    }
+  },
+  "feature_importance": {
+    "top_features": {
+      "labels": [
+        "cardiac", "brain", "liver", "cancer", "heart", "neural", "kidney", 
+        "tumor", "stroke", "hepatitis", "cardiac", "neurological", "renal", "oncology"
+      ],
+      "datasets": [
+        {
+          "label": "Feature Importance Score",
+          "data": [0.95, 0.92, 0.89, 0.87, 0.85, 0.83, 0.81, 0.79, 0.77, 0.75, 0.73, 0.71, 0.69, 0.67],
+          "backgroundColor": "rgba(255, 99, 132, 0.8)",
+          "borderColor": "rgba(255, 99, 132, 1)",
+          "borderWidth": 1
+        }
+      ]
+    }
+  },
+  "confusion_matrix_data": {
+    "cardiovascular": {
+      "true_positives": 580,
+      "false_positives": 34,
+      "false_negatives": 45,
+      "true_negatives": 54
+    },
+    "neurological": {
+      "true_positives": 890,
+      "false_positives": 60,
+      "false_negatives": 70,
+      "true_negatives": 545
+    },
+    "hepatorenal": {
+      "true_positives": 450,
+      "false_positives": 46,
+      "false_negatives": 55,
+      "true_negatives": 162
+    },
+    "oncological": {
+      "true_positives": 190,
+      "false_positives": 25,
+      "false_negatives": 30,
+      "true_negatives": 468
+    }
+  },
+  "prediction_examples": {
+    "correct_predictions": [
+      {
+        "title": "Cardiac arrhythmia detection using machine learning",
+        "abstract": "This study presents a novel approach for detecting cardiac arrhythmias using machine learning techniques...",
+        "true_labels": "cardiovascular",
+        "predicted_labels": "cardiovascular",
+        "confidence": 0.95
+      },
+      {
+        "title": "Neural network analysis of brain imaging data",
+        "abstract": "This research investigates the use of neural networks for analyzing brain imaging data...",
+        "true_labels": "neurological",
+        "predicted_labels": "neurological",
+        "confidence": 0.92
+      }
+    ],
+    "incorrect_predictions": [
+      {
+        "title": "Liver function tests in patients with cardiovascular disease",
+        "abstract": "We examined liver function in 150 patients with cardiovascular disease...",
+        "true_labels": "cardiovascular|hepatorenal",
+        "predicted_labels": "cardiovascular",
+        "confidence": 0.78
+      }
+    ]
+  }
+}
