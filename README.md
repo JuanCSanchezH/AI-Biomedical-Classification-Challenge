@@ -212,7 +212,7 @@ cd v0_visualization
 python3 demo_classifier.py
 
 # View documentation
-open v0_visualization/README.md
+open v0_visualization/vo_documentation.md
 ```
 
 For detailed V0 integration guide, see [`v0_visualization/README.md`](v0_visualization/README.md).
@@ -227,7 +227,7 @@ This project is part of a machine learning challenge.
 
 **Developed by HealthCoders Lab Team 👩‍💻👨‍💻**
 
-[![Report](https://img.shields.io/badge/📊-View%20Report-blue)](output/COMPREHENSIVE_REPORT.md)
+[![Report](https://img.shields.io/badge/📊-View%20Report-blue)](docs/model/model_documentation)
 [![Results](https://img.shields.io/badge/📈-View%20Results-green)](output/)
 [![V0 Demo](https://img.shields.io/badge/🎨-V0%20Demo-purple)](v0_visualization/)
 
